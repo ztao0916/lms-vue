@@ -1,0 +1,28 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript", "vue"],
+  "prettier.tabWidth": 2,
+  "prettier.arrowParens": "always",
+  "prettier.arrayExpand": false,
+  "prettier.openOutput": true,
+  "prettier.noSpaceEmptyFn": false,
+  "prettier.spaceBeforeFunctionParen": false,
+  "prettier.cssEnable": ["css", "less", "scss", "postcss"],
+  "prettier.javascriptEnable": [],
+  "prettier.jsonEnable": ["json"],
+  "prettier.typescriptEnable": [],
+  "prettier.printWidth": 140,
+  "prettier.alignObjectProperties": false,
+  "prettier.autoScroll": true,
+  "prettier.breakBeforeElse": false,
+  "prettier.breakProperty": false,
+  "prettier.singleQuote": true,
+  "prettier.semi": true,
+  "prettier.bracketSpacing": true,
+  "prettier.useTabs": false,
+  "prettier.endOfLine": "lf",
+  "prettier.trailingComma": "none"
+}
