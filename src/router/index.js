@@ -1,25 +1,24 @@
+/*
+ * @Author: ztao
+ * @Date: 2022-05-27 12:33:55
+ * @LastEditTime: 2022-05-28 14:44:54
+ * @Description: 需要两份路由: 一份公共的路由(静态),一份权限路由(动态生成)
+ */
 import { createRouter, createWebHashHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
 
-const routes = [
+//公共路由
+const publicRoutes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView,
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
+    path: '/login',
+    name: 'Login',
+    // 按需加载
+    component: () => import(/* webpackChunkName: "login" */ '@views/login'),
   },
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes,
+  routes: publicRoutes,
 });
 
 export default router;
