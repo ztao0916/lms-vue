@@ -228,18 +228,100 @@ const submitForm = (formEl) => {
 
 接口调用的话,需要封装axios,封装以后的代码如下
 
-```
+```js
+//安装axios
+yarn add axios
+//创建utils/request.js文件,环境变量文件需自定义
+import axios from 'axios';
+import { ElMessage } from 'element-plus';
+
+const service = axios.create({
+  baseURL: process.env.VUE_APP_BASE_API,
+  timeout: 5000,
+  // withCredentials: true, //携带身份认证文件cookie
+});
+
+service.interceptors.request.use(
+  (config) => {
+    /**
+     * config.headers.cookie = '123456'; //浏览器报错:Refused to set unsafe header "cookie"
+     * 这里正常来说是需要有一个请求拦截的,添加token的操作
+     * 目标服务器现在是cookie,所以需要添加cookie,
+     * 后端这里有个逻辑,你调用登录接口成功以后,就自动把cookie注入到浏览器的cookie里了
+     * 所以不需要请求拦截统一注入token
+     */
+    return config; //必须返回配置
+  },
+  (error) => {
+    ElMessage.error(error.message);
+    return Promise.reject(error);
+  },
+);
+
+service.interceptors.response.use(
+  (response) => {
+    const { code, data, msg } = response.data;
+    //要根据code决定下面的操作
+    if (code == '0000') {
+      return data;
+    } else {
+      //业务错误
+      ElMessage.error(msg || '请求失败'); //提示错误信息
+      return Promise.reject(new Error(msg || '请求失败'));
+    }
+  },
+  (error) => {
+    console.log(error);
+    ElMessage.error(error || error.message);
+    return Promise.reject(error);
+  },
+);
+
+export default service;
 
 ```
 
-最后有个大问题
+##### 代理问题(重点)
 
-后端没有提供接口,所以需要做一个接口代理(这里代理生产的API,因为测试的API只能公司服务器访问)
+有个代理的问题,需要着重记录一下
 
-使用node编写,代码如下
+我们服务器使用的是cookie校验,加上后端不想改代码,那么前端应该怎么做呢?
 
+处理`cookie`的代理问题
+
+我们代码这里,只要你调用登录成功,`cookie`就会自动注入浏览器的`application-Cookie`里
+
+`httpOnly`的cookie是无法通过`document.cookie`或者`js-cookie`获取的,原因就是浏览器策略问题,防止`cookie`盗用
+
+```js
+//第一步: 封装axios添加withCredentials: true
+const service = axios.create({
+  baseURL: process.env.VUE_APP_BASE_API,
+  timeout: 5000,
+  withCredentials: true, //携带身份认证文件cookie
+});
+//第二步: 在vue.config.js的devProxy中
+    proxy: {
+      '/api': {
+        target: 'https://xxx',
+        changeOrigin: true, // 是否跨域
+        secure: true, //如果是https请设置为true
+        pathRewrite: {
+          '^/api': '',
+        },
+        cookieDomainRewrite: {
+          'xxx': 'localhost',
+        },
+      },
+    },
+//第三步: 重启vue项目,然后调用登录接口,登录完成以后在调用权限菜单,可以发现cookie已经被加在菜单请求的headers里了
 ```
-```
+
+
+
+#### 3. 使用store
+
+这里主要是处理登录和退出功能,因为后端设置了`httpOnly`,所以登录和退出时,cookie的操作都不能由js完成,而是通过调用后端接口
 
 
 

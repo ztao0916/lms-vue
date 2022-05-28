@@ -37,9 +37,11 @@
 // 这里可以导入其他文件
 import { reactive, ref } from 'vue';
 import { validatePassword } from './rules';
+import { login } from '@/api/sys';
 const loginForm = reactive({
-  username: 'admin',
-  password: '123456',
+  username: 'ztt',
+  // password: 'Rc1335',
+  password: 'z123456',
 });
 const ruleFormRef = ref();
 //loading展示
@@ -54,6 +56,9 @@ const submitForm = (formEl) => {
   formEl.validate((valid) => {
     if (valid) {
       console.log('submit!');
+      login(loginForm).then((res) => {
+        console.log(res);
+      });
     } else {
       console.log('error submit!');
       return false;
