@@ -1,12 +1,13 @@
 /*
  * @Author: ztao
  * @Date: 2022-05-29 10:14:14
- * @LastEditTime: 2022-05-29 11:07:14
+ * @LastEditTime: 2022-05-29 22:07:43
  * @Description:
  */
-import { login, getWorkToDoMap } from '@/api/sys';
-import { setItem, getItem } from '@/utils/storage';
+import { login, getWorkToDoMap, logout } from '@/api/sys';
+import { setItem, getItem, removeAllItem } from '@/utils/storage';
 import { TOKEN } from '@/constant';
+import router from '@/router';
 export default {
   namespaced: true,
   state: {
@@ -19,7 +20,10 @@ export default {
       setItem(TOKEN, token);
     },
     setUserInfo(state, userInfo) {
-      state.userInfo = userInfo;
+      let newUserInfo = Object.assign({}, userInfo, {
+        avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+      });
+      state.userInfo = newUserInfo;
     },
   },
   actions: {
@@ -42,12 +46,18 @@ export default {
     async getUserInfo() {
       try {
         const res = await getWorkToDoMap();
-        console.log(res);
         this.commit('user/setUserInfo', res);
         return res;
       } catch (err) {
         return err;
       }
+    },
+    async logout() {
+      await logout();
+      this.commit('user/setToken', '');
+      this.commit('user/setUserInfo', {});
+      removeAllItem();
+      router.push('/login');
     },
   },
 };

@@ -1,7 +1,7 @@
 /*
  * @Author: ztao
  * @Date: 2022-05-28 22:56:51
- * @LastEditTime: 2022-05-29 10:14:34
+ * @LastEditTime: 2022-05-29 22:00:33
  * @Description: 登录 获取菜单等操作
  */
 import request from '@/utils/request';
@@ -35,5 +35,13 @@ export const menu = () => {
   return request({
     url: '/lms/menu',
     method: 'get',
+  });
+};
+
+//退出登录
+export const logout = () => {
+  return request({
+    url: '/logout',
+    method: 'post',
   });
 };

@@ -44,8 +44,8 @@ const store = useStore();
 const router = useRouter();
 const loginForm = reactive({
   username: 'ztt',
-  // password: 'Rc1335',
-  password: 'z123456',
+  password: 'Rc1335',
+  // password: 'z123456',
 });
 const ruleFormRef = ref();
 //loading展示

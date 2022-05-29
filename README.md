@@ -507,7 +507,17 @@ router.beforeEach(async (to, from, next) => {
 
 ### 2022/5/59 主页布局
 
+基本结构的话,参考教程,这边只展示最后的结果
 
+有个问题
+
+```
+variables.scss 里面:export导出的scss变量在.vue文件获取到的是一个空对象
+
+解决办法: 把文件名改成variables.module.scss即可
+```
+
+这里文档没想好怎么写,先搁置一下,先写功能
 
 
 
