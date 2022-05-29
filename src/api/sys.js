@@ -1,7 +1,7 @@
 /*
  * @Author: ztao
  * @Date: 2022-05-28 22:56:51
- * @LastEditTime: 2022-05-29 00:18:55
+ * @LastEditTime: 2022-05-29 09:52:24
  * @Description: 登录 获取菜单等操作
  */
 import request from '@/utils/request';
@@ -14,7 +14,7 @@ import qs from 'qs';
 
 export const login = (data) => {
   return request({
-    url: '/api/login',
+    url: '/login',
     method: 'post',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -25,7 +25,7 @@ export const login = (data) => {
 
 export const menu = () => {
   return request({
-    url: '/api/lms/menu',
+    url: '/lms/menu',
     method: 'get',
   });
 };

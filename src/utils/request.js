@@ -1,12 +1,13 @@
 /*
  * @Author: ztao
  * @Date: 2022-05-28 22:33:19
- * @LastEditTime: 2022-05-28 23:51:37
+ * @LastEditTime: 2022-05-29 09:42:49
  * @Description: axios封装
  */
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
 
+console.log(process.env.VUE_APP_BASE_API);
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 5000,
@@ -19,7 +20,7 @@ service.interceptors.request.use(
      * config.headers.cookie = '123456'; //浏览器报错:Refused to set unsafe header "cookie"
      * 这里正常来说是需要有一个请求拦截的,添加token的操作
      * 目标服务器现在是cookie,所以需要添加cookie,
-     * 后端这里有个逻辑,你调用登录接口成功以后,就自动把cookie注入到浏览器的cookie里了
+     * 后端这里有个逻辑,你调用登录接口成功以后,就通过set-cookie把cookie注入到浏览器里了,而且前端获取不到
      * 所以不需要请求拦截统一注入token
      */
     return config; //必须返回配置

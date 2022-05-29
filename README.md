@@ -65,6 +65,23 @@ module.exports = defineConfig({
       .set('@store', resolve('src/store'))
       .set('vue-i18n', 'vue-i18n/dist/vue-i18n.cjs.js');
   },
+  devServer: {
+    open: true, // 是否打开浏览器
+    host: 'localhost',
+    proxy: {
+      '/api': {
+        target: 'http://test.epean.cn',
+        changeOrigin: true, // 是否跨域
+        //secure: true, //如果是https请设置为true
+        pathRewrite: {
+          '^/api': '',
+        },
+        cookieDomainRewrite: {
+          'test.epean.cn': 'localhost',
+        },
+      },
+    },
+  },
 });
 ```
 
@@ -322,6 +339,17 @@ const service = axios.create({
 #### 3. 使用store
 
 这里主要是处理登录和退出功能,因为后端设置了`httpOnly`,所以登录和退出时,cookie的操作都不能由js完成,而是通过调用后端接口
+
+需要把登录封装到store里面,方便每次给请求设置`token`
+
+我们项目里是不需要的,因为`cookie`前端不存储,为了熟悉整个开发流程,还是搞一下
+
+```
+```
+
+
+
+
 
 
 
