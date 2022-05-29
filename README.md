@@ -38,7 +38,7 @@ EditorConfig for VS Code
 
 ##### 类,id还有其他样式定义规范
 
-样式初始化
+样式初始化`normalize.css`
 
 
 
@@ -336,7 +336,9 @@ const service = axios.create({
 
 
 
-#### 3. 使用store
+#### 3. 使用vuex
+
+用法参考官网:[传送门](https://vuex.vuejs.org/zh/guide/modules.html)
 
 这里主要是处理登录和退出功能,因为后端设置了`httpOnly`,所以登录和退出时,cookie的操作都不能由js完成,而是通过调用后端接口
 
@@ -344,14 +346,181 @@ const service = axios.create({
 
 我们项目里是不需要的,因为`cookie`前端不存储,为了熟悉整个开发流程,还是搞一下
 
+```js
+//设置token=cookie
+//store文件夹下创建modules文件夹
+//store/modules/user.js
+import { login } from '@/api/sys';
+import { setItem, getItem } from '@/utils/storage';
+import { TOKEN } from '@/constant';
+export default {
+  namespaced: true,
+  state: {
+    token: getItem(TOKEN) || '',
+  },
+  mutations: {
+    setToken(state, token) {
+      state.token = token;
+      setItem(TOKEN, token);
+    },
+  },
+  actions: {
+    login(context, userInfo) {
+      const { username, password } = userInfo;
+      return new Promise((resolve, reject) => {
+        login({
+          username,
+          password,
+        })
+          .then((data) => {
+            this.commit('user/setToken', data);
+            resolve(data);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    },
+  },
+};
+//store/index.js文件中引入
+import { createStore } from 'vuex';
+import user from './modules/user';
+
+export default createStore({
+  state: {},
+  getters: {},
+  mutations: {},
+  actions: {},
+  modules: {
+    user,
+  },
+});
+//在login/index.vue中调用,此时cookie已经被作为token存储在localstorage中了
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+const store = useStore();
+const router = useRouter();
+//提交表单
+const submitForm = (formEl) => {
+  if (!formEl) return;
+  formEl.validate((valid) => {
+    loading.value = true;
+    if (valid) {
+      store
+        .dispatch('user/login', loginForm)
+        .then((data) => {
+          loading.value = false;
+          router.push('/');
+          console.log('登录成功', data);
+        })
+        .catch((err) => {
+          loading.value = false;
+          console.log('登录失败', err || err.message);
+        });
+    } else {
+      console.log('error submit!');
+      return false;
+    }
+  });
+};
 ```
+
+创建`utils/storage.js`文件,封装本地storage
+
+```js
+export const setItem = (key, value) => {
+  //storage不能存储引用类型,需要转成基础类型
+  if (typeof value == 'object') {
+    value = JSON.stringify(value);
+  }
+  window.localStorage.setItem(key, value);
+};
+
+export const getItem = (key) => {
+  const data = window.localStorage.getItem(key);
+  try {
+    return JSON.parse(data);
+  } catch (err) {
+    return data;
+  }
+};
+
+export const removeItem = (key) => {
+  window.localStorage.removeItem(key);
+};
+
+export const removeAllItem = () => {
+  window.localStorage.clear();
+};
+```
+
+#### 4. 登录鉴权
+
+这是一个路由的操作,就是说,如果没有token,我就把页面重定向到登录页,如果你在登录页就不动
+
+获取用户信息的接口有点问题,我这边获取到的是用户权限开发组长,暂时不影响
+
+```js
+//main.js引入
+import './permission';
+//新建 src/permission.js文件
+import router from './router';
+import store from './store';
+
+//白名单路由
+const whiteList = ['/login'];
+
+router.beforeEach(async (to, from, next) => {
+  //存在token进入主页
+  if (store.getters.token) {
+    if (to.path === '/login') {
+      next('/');
+    } else {
+      //判断用户资料是否获取,不存在就需要获取,展示在页面右上角的
+      if (!store.getters.hasUserInfo) {
+        await store.dispatch('user/getUserInfo');
+      }
+      next();
+    }
+  } else {
+    //没有token的话只可以进入白名单
+    if (whiteList.indexOf(to.path) > -1) {
+      next();
+    } else {
+      next('/login');
+    }
+  }
+});
 ```
 
 
 
+登录这里的功能就基本完结了
 
 
 
+### 2022/5/59 主页布局
+
+
+
+
+
+
+
+### 思考题
+
+#### 一. 为什么要把登录放在vuex里
+
+有个思考问题: 为什么要把登录请求放在vuex中?
+
+可以参考该文章:[传送门](https://blog.csdn.net/yezi153/article/details/121715838)
+
+基本上从以下几个方面
+
+1. 登录的作用
+2. token的存储
+3. vuex+storage=最终方案
 
 
 

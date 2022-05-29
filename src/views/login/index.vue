@@ -37,7 +37,11 @@
 // 这里可以导入其他文件
 import { reactive, ref } from 'vue';
 import { validatePassword } from './rules';
-import { login } from '@/api/sys';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const store = useStore();
+const router = useRouter();
 const loginForm = reactive({
   username: 'ztt',
   // password: 'Rc1335',
@@ -54,11 +58,19 @@ const loginRules = reactive({
 const submitForm = (formEl) => {
   if (!formEl) return;
   formEl.validate((valid) => {
+    loading.value = true;
     if (valid) {
-      console.log('submit!');
-      login(loginForm).then((res) => {
-        console.log(res);
-      });
+      store
+        .dispatch('user/login', loginForm)
+        .then((data) => {
+          loading.value = false;
+          router.push('/');
+          console.log('登录成功', data);
+        })
+        .catch((err) => {
+          loading.value = false;
+          console.log('登录失败', err || err.message);
+        });
     } else {
       console.log('error submit!');
       return false;

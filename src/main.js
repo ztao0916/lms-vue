@@ -1,11 +1,12 @@
 /*
  * @Author: ztao
  * @Date: 2022-05-27 11:26:46
- * @LastEditTime: 2022-05-28 15:54:53
+ * @LastEditTime: 2022-05-29 10:58:29
  * @Description:
  */
 import { createApp } from 'vue';
 import App from './App.vue';
+import './permission';
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 import 'normalize.css';

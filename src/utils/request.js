@@ -1,13 +1,12 @@
 /*
  * @Author: ztao
  * @Date: 2022-05-28 22:33:19
- * @LastEditTime: 2022-05-29 09:42:49
+ * @LastEditTime: 2022-05-29 11:01:55
  * @Description: axios封装
  */
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
 
-console.log(process.env.VUE_APP_BASE_API);
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 5000,
