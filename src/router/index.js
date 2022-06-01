@@ -5,47 +5,48 @@
  * @Description: 需要两份路由: 一份公共的路由(静态),一份权限路由(动态生成)
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
-import layout from '@/layout';
+import Login from '@views/login';
+import Layout from '@/layout/index';
 
-//私有路由-权限路由
+//路由懒加载 component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+//私有路由表
 const privateRoutes = [
   {
     path: '/user',
-    component: layout,
+    component: Layout,
     redirect: '/user/manage',
     meta: {
       title: 'user',
-      icon: 'personnel',
+      icon: 'Avatar',
     },
     children: [
       {
         path: '/user/manage',
-        component: () => import('@/views/user-manage/index'),
+        component: () => import(/* webpackChunkName: "user-manage" */ '@/views/user-manage/index.vue'),
         meta: {
           title: 'userManage',
-          icon: 'personnel-manage',
+          icon: 'User',
         },
       },
       {
         path: '/user/role',
-        component: () => import('@/views/role-list/index'),
+        component: () => import(/* webpackChunkName: "role-list" */ '@/views/role-list/index.vue'),
         meta: {
           title: 'roleList',
-          icon: 'role',
+          icon: 'Timer',
         },
       },
       {
         path: '/user/permission',
-        component: () => import('@/views/permission-list/index'),
+        component: () => import(/* webpackChunkName: "permission-list" */ '@/views/permission-list/index.vue'),
         meta: {
           title: 'permissionList',
-          icon: 'permission',
+          icon: 'Iphone',
         },
       },
       {
         path: '/user/info/:id',
-        name: 'userInfo',
-        component: () => import('@/views/user-info/index'),
+        component: () => import(/* webpackChunkName: "user-info" */ '@/views/user-info/index.vue'),
         meta: {
           title: 'userInfo',
         },
@@ -53,7 +54,7 @@ const privateRoutes = [
       {
         path: '/user/import',
         name: 'import',
-        component: () => import('@/views/import/index'),
+        component: () => import(/* webpackChunkName: "import" */ '@/views/import/index.vue'),
         meta: {
           title: 'excelImport',
         },
@@ -62,39 +63,39 @@ const privateRoutes = [
   },
   {
     path: '/article',
-    component: layout,
+    component: Layout,
     redirect: '/article/ranking',
     meta: {
       title: 'article',
-      icon: 'article',
+      icon: 'ElementPlus',
     },
     children: [
       {
         path: '/article/ranking',
-        component: () => import('@/views/article-ranking/index'),
+        component: () => import(/* webpackChunkName: "article-ranking" */ '@/views/article-ranking/index.vue'),
         meta: {
           title: 'articleRanking',
-          icon: 'article-ranking',
+          icon: 'ElemeFilled',
         },
       },
       {
         path: '/article/:id',
-        component: () => import('@/views/article-detail/index'),
+        component: () => import(/* webpackChunkName: "article-detaial" */ '@/views/article-detail/index.vue'),
         meta: {
           title: 'articleDetail',
         },
       },
       {
         path: '/article/create',
-        component: () => import('@/views/article-create/index'),
+        component: () => import(/* webpackChunkName: "article-create" */ '@/views/article-create/index.vue'),
         meta: {
           title: 'articleCreate',
-          icon: 'article-create',
+          icon: 'Eleme',
         },
       },
       {
         path: '/article/editor/:id',
-        component: () => import('@/views/article-create/index'),
+        component: () => import(/* webpackChunkName: "article-create" */ '@/views/article-create/index.vue'),
         meta: {
           title: 'articleEditor',
         },
@@ -102,26 +103,47 @@ const privateRoutes = [
     ],
   },
 ];
-
-//公共路由
+/**
+ * 公共路由表
+ */
 const publicRoutes = [
   {
     path: '/login',
     name: 'Login',
-    // 按需加载
-    component: () => import(/* webpackChunkName: "login" */ '@views/login'),
+    component: Login,
   },
   {
     path: '/',
     name: 'Layout',
-    // 按需加载
-    component: () => import(/* webpackChunkName: "home" */ '@/layout'),
+    component: Layout,
+    redirect: '/profile',
+    children: [
+      {
+        path: '/profile',
+        name: 'profile',
+        component: () => import('@/views/profile/index'),
+        meta: {
+          title: 'profile',
+          icon: 'Aim',
+        },
+      },
+      {
+        path: '/404',
+        name: '404',
+        component: () => import('@/views/error-page/404'),
+      },
+      {
+        path: '/401',
+        name: '401',
+        component: () => import('@/views/error-page/401'),
+      },
+    ],
   },
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: [...publicRoutes, ...privateRoutes],
+  routes: [...privateRoutes, ...publicRoutes],
 });
 
 export default router;

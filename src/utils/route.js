@@ -1,10 +1,10 @@
 /*
  * @Author: ztao
  * @Date: 2022-03-21 15:55:56
- * @LastEditTime: 2022-06-01 22:33:05
+ * @LastEditTime: 2022-06-01 23:53:53
  * @Description: 处理路由:生成menu格式的路由
  */
-// import path from 'path';
+import path from 'path';
 
 //返回所有的子路由
 
@@ -19,9 +19,9 @@ const getChildrenRoutes = (routes) => {
 };
 
 /**
- * @description: 路由查重
+ * @description: 筛选出一级路由
  * @param {*} routes router.getRoutes() 获取所有的路由
- * @return {*} 查重路由,剔除重复路由
+ * @return {*} 筛选出一级路由
  */
 export const filterRoutes = (routes) => {
   const childrenRoutes = getChildrenRoutes(routes);
@@ -65,7 +65,7 @@ export function generateMenus(routes, basePath = '') {
     //执行具体的逻辑
     // console.log('item', item);
     //合并path作为跳转路径
-    const routePath = basePath + item.path;
+    const routePath = path.resolve(basePath, item.path);
     //路由分离之后,存在同名副路由的情况,需要单独处理
     let route = result.find((item) => item.path === routePath);
     // console.log('route', route);

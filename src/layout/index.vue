@@ -1,23 +1,22 @@
 <template>
-  <div class="app-wrapper">
+  <div class="app-wrapper" :class="[$store.getters.sidebarOpened ? 'openSidebar' : 'hideSidebar']">
     <!-- 左侧menu -->
-    <sidebar class="sidebar-container" />
+    <sidebar class="sidebar-container" :style="{ backgroundColor: variables.menuBg }"></sidebar>
     <div class="main-container">
       <div class="fixed-header">
-        <!-- 顶部导航 -->
+        <!-- 顶部navbar -->
         <navbar />
       </div>
-      <!-- 主体内容 -->
-      <app-main />
+      <!-- 内容区 -->
+      <app-main></app-main>
     </div>
   </div>
 </template>
-
 <script setup>
-// 这里可以导入其他文件
-import Navbar from './components/Navbar.vue';
+import Navbar from './components/Navbar';
 import Sidebar from './components/Siderbar';
-import AppMain from './components/AppMain.vue';
+import AppMain from './components/AppMain';
+import variables from '@/styles/variables.module.scss';
 </script>
 <style lang="scss" scoped>
 @import '~@/styles/mixin.scss';
@@ -36,5 +35,9 @@ import AppMain from './components/AppMain.vue';
   right: 0;
   z-index: 9;
   width: calc(100% - #{$sideBarWidth});
+  transition: width 0.28s;
+}
+.hideSidebar .fixed-header {
+  width: calc(100% - #{$hideSideBarWidth});
 }
 </style>

@@ -1,5 +1,7 @@
 <template>
   <div class="navbar">
+    <hamburger class="humburger-container" />
+    <breadcrumb class="breadcrumb-container" />
     <div class="right-menu">
       <!-- 头像 -->
       <el-dropdown class="avatar-container" trigger="click" @command="handleCommand">
@@ -25,6 +27,8 @@
 <script setup>
 // 这里可以导入其他文件
 import { useStore } from 'vuex';
+import Hamburger from '@/components/Humburger';
+import Breadcrumb from '@/components/Breadcrumb';
 const store = useStore();
 const handleCommand = (command) => {
   if (command == 'logout') {
@@ -57,6 +61,21 @@ const handleCommand = (command) => {
         }
       }
     }
+  }
+  .humburger-container {
+    line-height: 55px;
+    height: 100%;
+    float: left;
+    cursor: pointer;
+    // hover 动画
+    transition: background 0.5s;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+  }
+  .breadcrumb-container {
+    float: left;
   }
 }
 </style>
