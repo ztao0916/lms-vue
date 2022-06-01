@@ -1,10 +1,10 @@
 /*
  * @Author: ztao
  * @Date: 2022-05-29 10:14:14
- * @LastEditTime: 2022-05-29 22:07:43
+ * @LastEditTime: 2022-06-01 17:14:40
  * @Description:
  */
-import { login, getWorkToDoMap, logout } from '@/api/sys';
+import { login, getWorkToDoMap, logout, menu } from '@/api/sys';
 import { setItem, getItem, removeAllItem } from '@/utils/storage';
 import { TOKEN } from '@/constant';
 import router from '@/router';
@@ -13,6 +13,7 @@ export default {
   state: {
     token: getItem(TOKEN) || '',
     userInfo: {},
+    menus: [],
   },
   mutations: {
     setToken(state, token) {
@@ -24,6 +25,9 @@ export default {
         avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
       });
       state.userInfo = newUserInfo;
+    },
+    setMenu(state, menus) {
+      state.menus = menus;
     },
   },
   actions: {
@@ -47,6 +51,15 @@ export default {
       try {
         const res = await getWorkToDoMap();
         this.commit('user/setUserInfo', res);
+        return res;
+      } catch (err) {
+        return err;
+      }
+    },
+    async getMenu() {
+      try {
+        const res = await menu();
+        this.commit('user/setMenu', res);
         return res;
       } catch (err) {
         return err;
