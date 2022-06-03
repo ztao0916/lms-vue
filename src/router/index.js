@@ -1,7 +1,7 @@
 /*
  * @Author: ztao
  * @Date: 2022-05-27 12:33:55
- * @LastEditTime: 2022-06-01 16:04:48
+ * @LastEditTime: 2022-06-03 22:09:19
  * @Description: 需要两份路由: 一份公共的路由(静态),一份权限路由(动态生成)
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
@@ -12,43 +12,77 @@ import Layout from '@/layout/index';
 //私有路由表
 const privateRoutes = [
   {
-    path: '/user',
+    path: '/order',
     component: Layout,
-    redirect: '/user/manage',
+    // redirect: '/order/rules/blacklist',
     meta: {
-      title: 'user',
+      title: '订单',
       icon: 'Avatar',
     },
     children: [
       {
-        path: '/user/manage',
+        path: '/order/rules',
         component: () => import(/* webpackChunkName: "user-manage" */ '@/views/user-manage/index.vue'),
         meta: {
-          title: 'userManage',
+          title: '订单规则',
           icon: 'User',
         },
+        children: [
+          {
+            path: '/order/rules/blacklist',
+            component: () => import(/* webpackChunkName: "user-manage" */ '@/views/user-manage/black-list/index.vue'),
+            meta: {
+              title: '黑名单地址',
+              icon: 'User',
+            },
+          },
+          // {
+          //   path: '/order/rules/inventoryrules',
+          //   component: () => import(/* webpackChunkName: "user-manage" */ '@/views/user-manage/black-list/index.vue'),
+          //   meta: {
+          //     title: '库存占用规则',
+          //     icon: 'User',
+          //   },
+          // },
+          // {
+          //   path: '/order/rules/autoAuditRules',
+          //   component: () => import(/* webpackChunkName: "user-manage" */ '@/views/user-manage/black-list/index.vue'),
+          //   meta: {
+          //     title: '自动审核规则',
+          //     icon: 'User',
+          //   },
+          // },
+          // {
+          //   path: '/order/rules/countryrule',
+          //   component: () => import(/* webpackChunkName: "user-manage" */ '@/views/user-manage/black-list/index.vue'),
+          //   meta: {
+          //     title: '法属国规则',
+          //     icon: 'User',
+          //   },
+          // },
+        ],
       },
       {
-        path: '/user/role',
+        path: '/order/auditDespathOrder',
         component: () => import(/* webpackChunkName: "role-list" */ '@/views/role-list/index.vue'),
         meta: {
-          title: 'roleList',
+          title: '直邮订单',
           icon: 'Timer',
         },
       },
       {
-        path: '/user/permission',
+        path: '/order/winit',
         component: () => import(/* webpackChunkName: "permission-list" */ '@/views/permission-list/index.vue'),
         meta: {
-          title: 'permissionList',
+          title: '海外仓订单',
           icon: 'Iphone',
         },
       },
       {
-        path: '/user/info/:id',
+        path: '/order/oversea',
         component: () => import(/* webpackChunkName: "user-info" */ '@/views/user-info/index.vue'),
         meta: {
-          title: 'userInfo',
+          title: '海外仓统计',
         },
       },
       {
@@ -56,7 +90,7 @@ const privateRoutes = [
         name: 'import',
         component: () => import(/* webpackChunkName: "import" */ '@/views/import/index.vue'),
         meta: {
-          title: 'excelImport',
+          title: '导入表格',
         },
       },
     ],
@@ -66,7 +100,7 @@ const privateRoutes = [
     component: Layout,
     redirect: '/article/ranking',
     meta: {
-      title: 'article',
+      title: '文章',
       icon: 'ElementPlus',
     },
     children: [
@@ -74,7 +108,7 @@ const privateRoutes = [
         path: '/article/ranking',
         component: () => import(/* webpackChunkName: "article-ranking" */ '@/views/article-ranking/index.vue'),
         meta: {
-          title: 'articleRanking',
+          title: '文章排名',
           icon: 'ElemeFilled',
         },
       },
@@ -82,14 +116,14 @@ const privateRoutes = [
         path: '/article/:id',
         component: () => import(/* webpackChunkName: "article-detaial" */ '@/views/article-detail/index.vue'),
         meta: {
-          title: 'articleDetail',
+          title: '文章详情',
         },
       },
       {
         path: '/article/create',
         component: () => import(/* webpackChunkName: "article-create" */ '@/views/article-create/index.vue'),
         meta: {
-          title: 'articleCreate',
+          title: '创建文章',
           icon: 'Eleme',
         },
       },
@@ -97,7 +131,7 @@ const privateRoutes = [
         path: '/article/editor/:id',
         component: () => import(/* webpackChunkName: "article-create" */ '@/views/article-create/index.vue'),
         meta: {
-          title: 'articleEditor',
+          title: '编辑文章',
         },
       },
     ],
@@ -123,7 +157,7 @@ const publicRoutes = [
         name: 'profile',
         component: () => import('@/views/profile/index'),
         meta: {
-          title: 'profile',
+          title: '个人信息',
           icon: 'Aim',
         },
       },

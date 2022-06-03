@@ -1,5 +1,5 @@
 <template>
-  <div class="">用户管理</div>
+  <router-view></router-view>
 </template>
 
 <script setup>

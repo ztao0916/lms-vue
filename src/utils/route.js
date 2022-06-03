@@ -1,7 +1,7 @@
 /*
  * @Author: ztao
  * @Date: 2022-03-21 15:55:56
- * @LastEditTime: 2022-06-01 23:53:53
+ * @LastEditTime: 2022-06-02 10:21:26
  * @Description: 处理路由:生成menu格式的路由
  */
 import path from 'path';

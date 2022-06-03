@@ -1,11 +1,12 @@
 /*
  * @Author: ztao
  * @Date: 2022-05-28 22:33:19
- * @LastEditTime: 2022-05-29 11:01:55
+ * @LastEditTime: 2022-06-02 17:39:26
  * @Description: axios封装
  */
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
+import { removeAllItem } from '@/utils/storage';
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -43,7 +44,10 @@ service.interceptors.response.use(
     }
   },
   (error) => {
-    console.log(error);
+    console.log('错误信息', error);
+    if (error.response.status == 503) {
+      removeAllItem();
+    }
     ElMessage.error(error || error.message);
     return Promise.reject(error);
   },

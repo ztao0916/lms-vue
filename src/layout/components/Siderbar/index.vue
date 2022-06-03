@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="logo-container">
-      <el-avatar :size="logoHeight" shape="square" src="https://m.imooc.com/static/wap/static/common/img/logo-small@2x.png" />
-      <h1 class="logo-title" v-if="$store.getters.sidebarOpened">imooc-admin</h1>
+      <el-avatar :size="logoHeight" shape="square" src="http://test.epean.cn/lms/static/img/ep.png" />
+      <h1 class="logo-title" v-if="$store.getters.sidebarOpened">亿品贸易</h1>
     </div>
     <el-scrollbar>
       <sidebar-menu />

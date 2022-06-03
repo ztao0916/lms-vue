@@ -163,7 +163,7 @@
   // 菜单项过长时
   > .el-menu--popup {
     max-height: 100vh;
-    overflow-y: auto;
+    // overflow-y: auto;
 
     &::-webkit-scrollbar-track-piece {
       background: #d3dce6;

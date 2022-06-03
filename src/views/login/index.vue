@@ -44,8 +44,8 @@ const store = useStore();
 const router = useRouter();
 const loginForm = reactive({
   username: 'ztt',
-  password: 'Rc1335',
-  // password: 'z123456',
+  // password: 'Rc1335',
+  password: 'z123456',
 });
 const ruleFormRef = ref();
 //loading展示
@@ -82,7 +82,7 @@ const submitForm = (formEl) => {
 .login {
   min-height: 100vh;
   width: 100%;
-  background-image: url(../../img/login-bg.0899ffa6.jpg);
+  background-image: url(../../assets/img/login-bg.0899ffa6.jpg);
   background-size: cover;
   background-position: 50%;
   position: relative;
