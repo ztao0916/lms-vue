@@ -7,7 +7,6 @@
     :text-color="$store.getters.cssVar.menuText"
     :active-text-color="$store.getters.cssVar.menuActiveText"
     router
-    @open="handleOpen"
   >
     <template v-for="item in menuRoutes" :key="item.path">
       <sidebar-item :route="item" />
@@ -32,8 +31,5 @@ const activeMenu = computed(() => {
   const { path } = route;
   return path;
 });
-const handleOpen = (key, keyPath) => {
-  console.log(key, keyPath);
-};
 </script>
 <style lang="scss" scoped></style>

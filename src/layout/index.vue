@@ -6,6 +6,7 @@
       <div class="fixed-header">
         <!-- 顶部navbar -->
         <navbar />
+        <tags-view />
       </div>
       <!-- 内容区 -->
       <app-main></app-main>
@@ -16,6 +17,7 @@
 import Navbar from './components/Navbar';
 import Sidebar from './components/Siderbar';
 import AppMain from './components/AppMain';
+import TagsView from '@/components/TagsView';
 import variables from '@/styles/variables.module.scss';
 </script>
 <style lang="scss" scoped>

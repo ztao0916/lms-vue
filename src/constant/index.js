@@ -1,7 +1,7 @@
 /*
  * @Author: ztao
  * @Date: 2022-05-29 10:15:50
- * @LastEditTime: 2022-06-02 00:09:14
+ * @LastEditTime: 2022-06-05 17:33:53
  * @Description: 常量集合
  */
 export const TOKEN = 'token';
@@ -19,3 +19,6 @@ export const LANG = 'language';
 export const MAIN_COLOR = 'mainColor';
 // 默认色值
 export const DEFAULT_COLOR = '#409eff';
+
+// tags
+export const TAGS_VIEW = 'tagsView';

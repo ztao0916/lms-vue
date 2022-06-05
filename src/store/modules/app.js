@@ -1,16 +1,17 @@
 /*
  * @Author: ztao
  * @Date: 2022-06-02 00:08:23
- * @LastEditTime: 2022-06-02 00:08:49
+ * @LastEditTime: 2022-06-05 19:45:06
  * @Description:
  */
-import { LANG } from '@/constant';
+import { LANG, TAGS_VIEW } from '@/constant';
 import { getItem, setItem } from '@/utils/storage';
 export default {
   namespaced: true,
   state: {
     sidebarOpened: true,
     language: getItem(LANG) || 'zh',
+    tagsViewList: getItem(TAGS_VIEW) || [],
   },
   mutations: {
     triggerSidebarOpened(state) {
@@ -20,6 +21,37 @@ export default {
     setLanguage(state, lang) {
       setItem(LANG, lang);
       state.language = lang;
+    },
+    //添加tagsview
+    addTagsViewList(state, tag) {
+      const isFind = state.tagsViewList.find((item) => {
+        return item.path === tag.path;
+      });
+      // 处理重复
+      if (!isFind) {
+        state.tagsViewList.push(tag);
+        setItem(TAGS_VIEW, state.tagsViewList);
+      }
+    },
+    changeTagsView(state, { index, tag }) {
+      state.tagsViewList[index] = tag;
+      setItem(TAGS_VIEW, state.tagsViewList);
+    },
+    /**
+     * 删除 tag
+     * @param {type: 'other'||'right'||'index', index: index} payload
+     */
+    removeTagsView(state, payload) {
+      if (payload.type === 'index') {
+        state.tagsViewList.splice(payload.index, 1);
+        return;
+      } else if (payload.type === 'other') {
+        state.tagsViewList.splice(payload.index + 1, state.tagsViewList.length - payload.index + 1);
+        state.tagsViewList.splice(0, payload.index);
+      } else if (payload.type === 'right') {
+        state.tagsViewList.splice(payload.index + 1, state.tagsViewList.length - payload.index + 1);
+      }
+      setItem(TAGS_VIEW, state.tagsViewList);
     },
   },
   action: {},
